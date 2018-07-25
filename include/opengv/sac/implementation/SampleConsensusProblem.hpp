@@ -78,11 +78,23 @@ opengv::sac::SampleConsensusProblem<M>::drawIndexSample(
     // (and nowadays, random number generators are good)
     //std::swap (shuffled_indices_[i], shuffled_indices_[i + (rand () % (index_size - i))]);
     std::cout<<"std swap"<<std::endl;
-    std::swap(
-        shuffled_indices_[i],
-        shuffled_indices_[i + (rnd() % (index_size - i))] );
+    std::cout<<"rnd test"<<std::endl;
+    std::cout<<rnd()<<std::endl;
+
+    std::cout<<"custom shuffle"<<std::endl;
+    unsigned int source_index = i;
+    unsigned int target_index = i + (rnd() % (index_size - i));
+
+    std::cout<<"assignment"<<std::endl;
+    int temp = shuffled_indices_[source_index];
+    shuffled_indices_[source_index] = shuffled_indices_[target_index];
+    shuffled_indices_[target_index] = temp;
+    std::cout<<"done"<<std::endl;
+
+    // std::swap(
+    //     shuffled_indices_[i],
+    //     shuffled_indices_[i + (rnd() % (index_size - i))] );
   }
-  std::cout<<"std copy"<<std::endl;
   std::copy(
       shuffled_indices_.begin(),
       shuffled_indices_.begin() + sample_size,
