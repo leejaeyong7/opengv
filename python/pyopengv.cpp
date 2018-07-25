@@ -108,9 +108,7 @@ bp::list listFromEssentials( const opengv::essentials_t &Es )
 
 bp::object arrayFromTransformation( const opengv::transformation_t &t )
 {
-  std::cout<<"Formatting with eigen"<<std::endl;
   Eigen::Matrix<double, 3, 4, Eigen::RowMajor> t_row_major = t;
-  std::cout<<"Test"<<std::endl;
   return bpn_array_from_data(t_row_major.data(), 3, 4);
 }
 
@@ -287,30 +285,23 @@ bp::object ransac(
     int max_iterations,
     double probability )
 {
-  std::cout<<"In ransac"<<std::endl;
   using namespace opengv::sac_problems::absolute_pose;
-  std::cout<<"Name space checked"<<std::endl;
 
   CentralAbsoluteAdapter adapter(v, p);
-  std::cout<<"adapter checked"<<std::endl;
 
   // Create a ransac problem
-  std::cout<<"Defining algo"<<std::endl;
   AbsolutePoseSacProblem::algorithm_t algorithm = AbsolutePoseSacProblem::KNEIP;
   if (algo_name == "TWOPT") algorithm = AbsolutePoseSacProblem::TWOPT;
   else if (algo_name == "KNEIP") algorithm = AbsolutePoseSacProblem::KNEIP;
   else if (algo_name == "GAO") algorithm = AbsolutePoseSacProblem::GAO;
   else if (algo_name == "EPNP") algorithm = AbsolutePoseSacProblem::EPNP;
   else if (algo_name == "GP3P") algorithm = AbsolutePoseSacProblem::GP3P;
-  std::cout<<"algo defined"<<std::endl;
 
-  std::cout<<"shared ptr"<<std::endl;
   std::shared_ptr<AbsolutePoseSacProblem>
       absposeproblem_ptr(
         new AbsolutePoseSacProblem(adapter, algorithm));
 
   // Create a ransac solver for the problem
-  std::cout<<"Ransac class"<<std::endl;
   opengv::sac::Ransac<AbsolutePoseSacProblem> ransac;
 
   ransac.sac_model_ = absposeproblem_ptr;

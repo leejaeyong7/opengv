@@ -65,18 +65,24 @@ void
 opengv::sac::SampleConsensusProblem<M>::drawIndexSample(
     std::vector<int> & sample)
 {
+  std::cout<<"sample size"<<std::endl;
   size_t sample_size = sample.size();
   size_t index_size = shuffled_indices_.size();
+  std::cout<<sample_size<<std::endl;
+  std::cout<<index_size<<std::endl;
+  std::cout<<"for loop"<<std::endl;
   for( unsigned int i = 0; i < sample_size; ++i )
   {
     // The 1/(RAND_MAX+1.0) trick is when the random numbers are not uniformly
     // distributed and for small modulo elements, that does not matter
     // (and nowadays, random number generators are good)
     //std::swap (shuffled_indices_[i], shuffled_indices_[i + (rand () % (index_size - i))]);
+    std::cout<<"std swap"<<std::endl;
     std::swap(
         shuffled_indices_[i],
         shuffled_indices_[i + (rnd() % (index_size - i))] );
   }
+  std::cout<<"std copy"<<std::endl;
   std::copy(
       shuffled_indices_.begin(),
       shuffled_indices_.begin() + sample_size,
@@ -89,42 +95,32 @@ void
 opengv::sac::SampleConsensusProblem<M>::getSamples(
     int &iterations, std::vector<int> &samples)
 {
-  std::cout<<"Inside sample consensus"<<std::endl;
-  std::cout<<"get sample size"<<std::endl;
   // We're assuming that indices_ have already been set in the constructor
   if (indices_->size() < (size_t)getSampleSize())
   {
-    std::cout<<"fprintf!"<<std::endl;
     fprintf( stderr,
         "[sm::SampleConsensusModel::getSamples] Can not select %zu unique points out of %zu!\n",
         (size_t) getSampleSize(), indices_->size() );
     // one of these will make it stop :)
-    std::cout<<"clear"<<std::endl;
     samples.clear();
-    std::cout<<"returning"<<std::endl;
     iterations = std::numeric_limits<int>::max();
     return;
   }
 
   // Get a second point which is different than the first
-    std::cout<<"resize"<<std::endl;
   samples.resize( getSampleSize() );
-  std::cout<<"iterating"<<std::endl;
   for( int iter = 0; iter < max_sample_checks_; ++iter )
   {
     std::cout<<"draw index sample!"<<std::endl;
     drawIndexSample(samples);
 
     // If it's a good sample, stop here
-    std::cout<<"is good sample"<<std::endl;
     if(isSampleGood(samples))
       return;
   }
-  std::cout<<"fprintf stdout"<<std::endl;
   fprintf( stdout,
       "[sm::SampleConsensusModel::getSamples] WARNING: Could not select %d sample points in %d iterations!\n",
       getSampleSize(), max_sample_checks_ );
-  std::cout<<"clear"<<std::endl;
   samples.clear();
 
 }
