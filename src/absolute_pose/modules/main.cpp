@@ -45,19 +45,24 @@
 #include <opengv/math/roots.hpp>
 #include <opengv/math/arun.hpp>
 #include <opengv/math/cayley.hpp>
-#include <cstdlib>
+#include <cmath>
 #include <iostream>
 
 Eigen::Vector3d cross(Eigen::Vector3d v1, Eigen::Vector3d v2){
-  Eigen::Vector3d vector;
-  vector[0] = v1[1]*v2[2] - v1[2]*v2[1];
-  vector[1] = v1[0]*v2[2] - v1[2]*v2[0];
-  vector[2] = v1[0]*v2[1] - v1[1]*v2[0];
+  std::cout<<"cross define"<<std::endl;
+  std::cout<<v1[1]<<std::endl;
+
+  Eigen::Vector3d vector(
+    v1(1)*v2(2) - v1(2)*v2(1),
+    v1(0)*v2(2) - v1(2)*v2(0),
+    v1(0)*v2(1) - v1(1)*v2(0)
+  );
   return vector;
 }
 
 double norm(Eigen::Vector3d vector){
-  return fabs(vector[0]) + fabs(vector[1]) + fabs(vector[2]);
+  std::cout<<"before return"<<std::endl;
+  return std::sqrt(vector(0)*vector(0) + vector(1)*vector(1) + vector(2)*vector(2));
 }
 
 
