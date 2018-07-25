@@ -82,7 +82,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   Eigen::Vector3d temp1 = P2 - P1;
   Eigen::Vector3d temp2 = P3 - P1;
   std::cout<<"kneip main part 1.2"<<std::endl;
-  Eigen::Vector3d temp3 = cross(temp1, temp2);
+  cross(temp1, temp2);
   std::cout<<"Cross success"<<std::endl;
   std::cout<<"Norm : "<<norm(temp3)<<std::endl;
   std::cout<<"Norm success"<<std::endl;
