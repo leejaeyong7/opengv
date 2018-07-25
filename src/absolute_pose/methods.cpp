@@ -134,6 +134,7 @@ opengv::absolute_pose::p3p_kneip(
     const AbsoluteAdapterBase & adapter,
     const std::vector<int> & indices )
 {
+  std::cout<<"assert"<<std::endl;
   assert(indices.size()>2);
   return p3p_kneip( adapter, indices[0], indices[1], indices[2] );
 }
@@ -145,6 +146,7 @@ opengv::absolute_pose::p3p_kneip(
     size_t index1,
     size_t index2)
 {
+  std::cout<<"bb"<<std::endl;
   bearingVectors_t f;
   f.push_back(adapter.getBearingVector(index0));
   f.push_back(adapter.getBearingVector(index1));
@@ -154,6 +156,7 @@ opengv::absolute_pose::p3p_kneip(
   p.push_back(adapter.getPoint(index1));
   p.push_back(adapter.getPoint(index2));
   transformations_t solutions;
+  std::cout<<"p3p main"<<std::endl;
   modules::p3p_kneip_main( f, p, solutions );
   return solutions;
 }

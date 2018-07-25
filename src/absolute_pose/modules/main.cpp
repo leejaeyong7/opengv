@@ -45,6 +45,7 @@
 #include <opengv/math/roots.hpp>
 #include <opengv/math/arun.hpp>
 #include <opengv/math/cayley.hpp>
+#include <iostream>
 
 void
 opengv::absolute_pose::modules::p3p_kneip_main(
@@ -52,6 +53,8 @@ opengv::absolute_pose::modules::p3p_kneip_main(
     const points_t & p,
     transformations_t & solutions )
 {
+  std::cout<<"kneip main"<<std::endl;
+  std::cout<<"kneip main part 1"<<std::endl;
   point_t P1 = p[0];
   point_t P2 = p[1];
   point_t P3 = p[2];
@@ -78,6 +81,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
 
   f3 = T*f3;
 
+  std::cout<<"kneip main part 2"<<std::endl;
   if( f3(2,0) > 0)
   {
     f1 = f[1];
@@ -111,6 +115,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   N.row(1) = n2.transpose();
   N.row(2) = n3.transpose();
 
+  std::cout<<"kneip main part 3"<<std::endl;
   P3 = N*(P3-P1);
 
   double d_12 = temp1.norm();
@@ -139,6 +144,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   double b_pw2 = pow(b,2);
 
   Eigen::Matrix<double,5,1> factors;
+  std::cout<<"kneip main part 4"<<std::endl;
 
   factors(0,0) = -f_2_pw2*p_2_pw4
                  -p_2_pw4*f_1_pw2
@@ -175,10 +181,12 @@ opengv::absolute_pose::modules::p3p_kneip_main(
                  +p_2_pw2*f_1_pw2*p_1_pw2
                  +f_2_pw2*p_2_pw2*d_12_pw2*b_pw2;
 
+  std::cout<<"kneip main part 5"<<std::endl;
   std::vector<double> realRoots = math::o4_roots(factors);
 
   for( int i = 0; i < 4; i++ )
   {
+    std::cout<<"kneip main part 5.1"<<std::endl;
     double cot_alpha =
         (-f_1*p_1/f_2-realRoots[i]*p_2+d_12*b)/
         (-f_1*realRoots[i]*p_2/f_2+p_1-d_12);
@@ -191,6 +199,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
     if (cot_alpha < 0)
       cos_alpha = -cos_alpha;
 
+    std::cout<<"kneip main part 5.2"<<std::endl;
     translation_t C;
     C(0,0) = d_12*cos_alpha*(sin_alpha*b+cos_alpha);
     C(1,0) = cos_theta*d_12*sin_alpha*(sin_alpha*b+cos_alpha);
@@ -208,6 +217,7 @@ opengv::absolute_pose::modules::p3p_kneip_main(
     R(2,0) = 0.0;
     R(2,1) = -sin_theta;
     R(2,2) = cos_theta;
+    std::cout<<"kneip main part 5.3"<<std::endl;
 
     R = N.transpose()*R.transpose()*T;
 

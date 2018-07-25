@@ -31,6 +31,7 @@
 
 #include <opengv/sac_problems/absolute_pose/AbsolutePoseSacProblem.hpp>
 #include <opengv/absolute_pose/methods.hpp>
+#include <iostream>
 
 bool
 opengv::sac_problems::
@@ -58,12 +59,14 @@ opengv::sac_problems::
   }
   case KNEIP:
   {
+    std::cout<<"KNEIP"<<std::endl;
     solutions = opengv::absolute_pose::p3p_kneip(_adapter,indices);
-
+    std::cout<<"cam offset / rotation"<<std::endl;
     //transform solution into body frame (case of single shifted cam)
     translation_t t_bc = _adapter.getCamOffset(indices[0]);
     rotation_t R_bc = _adapter.getCamRotation(indices[0]);
 
+    std::cout<<"solution get"<<std::endl;
     for(size_t i = 0; i < solutions.size(); i++)
     {
       translation_t translation = solutions[i].col(3);
@@ -122,22 +125,26 @@ opengv::sac_problems::
   }
   
   //now compute reprojection error of fourth point, in order to find the right one
+  std::cout<<"projection error calc"<<std::endl;
   double minScore = 1000000.0;
   int minIndex = -1;
   for(size_t i = 0; i < solutions.size(); i++)
   {
+    std::cout<<"for] define"<<std::endl;
     //compute inverse transformation
     model_t inverseSolution;
     inverseSolution.block<3,3>(0,0) = solutions[i].block<3,3>(0,0).transpose();
     inverseSolution.col(3) = -inverseSolution.block<3,3>(0,0)*solutions[i].col(3);
 
     //get the fourth point in homogeneous form
+    std::cout<<"for] mat"<<std::endl;
     Eigen::Matrix<double,4,1> p_hom;
     p_hom.block<3,1>(0,0) = _adapter.getPoint(indices[3]);
     p_hom[3] = 1.0;
 
     //compute the reprojection (this is working for both central and
     //non-central case)
+    std::cout<<"for] back"<<std::endl;
     point_t bodyReprojection = inverseSolution * p_hom;
     point_t reprojection =
         _adapter.getCamRotation(indices[3]).transpose() *
@@ -145,6 +152,7 @@ opengv::sac_problems::
     reprojection = reprojection / reprojection.norm();
 
     //compute the score
+    std::cout<<"for] score"<<std::endl;
     double score =
         1.0 - (reprojection.transpose() * _adapter.getBearingVector(indices[3]));
 
@@ -156,6 +164,7 @@ opengv::sac_problems::
     }
   }
 
+  std::cout<<"projection error calc done"<<std::endl;
   if(minIndex == -1)
     return false;
   outModel = solutions[minIndex];

@@ -66,35 +66,17 @@ void
 opengv::sac::SampleConsensusProblem<M>::drawIndexSample(
     std::vector<int> & sample)
 {
-  std::cout<<"sample size"<<std::endl;
   size_t sample_size = sample.size();
   size_t index_size = shuffled_indices_.size();
-  std::cout<<sample_size<<std::endl;
-  std::cout<<index_size<<std::endl;
-  std::cout<<"for loop"<<std::endl;
   for( unsigned int i = 0; i < sample_size; ++i )
   {
     // The 1/(RAND_MAX+1.0) trick is when the random numbers are not uniformly
     // distributed and for small modulo elements, that does not matter
     // (and nowadays, random number generators are good)
     //std::swap (shuffled_indices_[i], shuffled_indices_[i + (rand () % (index_size - i))]);
-    std::cout<<"std swap"<<std::endl;
-    std::cout<<"rnd test"<<std::endl;
-    std::cout<<rnd()<<std::endl;
-
-    std::cout<<"custom shuffle"<<std::endl;
-    unsigned int source_index = i;
-    unsigned int target_index = i + (rnd() % (index_size - i));
-
-    std::cout<<"assignment"<<std::endl;
-    int temp = shuffled_indices_[source_index];
-    shuffled_indices_[source_index] = shuffled_indices_[target_index];
-    shuffled_indices_[target_index] = temp;
-    std::cout<<"done"<<std::endl;
-
-    // std::swap(
-    //     shuffled_indices_[i],
-    //     shuffled_indices_[i + (rnd() % (index_size - i))] );
+    std::swap(
+        shuffled_indices_[i],
+        shuffled_indices_[i + (rnd() % (index_size - i))] );
   }
   std::copy(
       shuffled_indices_.begin(),
@@ -124,7 +106,6 @@ opengv::sac::SampleConsensusProblem<M>::getSamples(
   samples.resize( getSampleSize() );
   for( int iter = 0; iter < max_sample_checks_; ++iter )
   {
-    std::cout<<"draw index sample!"<<std::endl;
     drawIndexSample(samples);
 
     // If it's a good sample, stop here
