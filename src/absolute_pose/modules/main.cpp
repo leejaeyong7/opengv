@@ -84,9 +84,9 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   std::cout<<"kneip main part 1.2"<<std::endl;
   cross(temp1, temp2);
   std::cout<<"Cross success"<<std::endl;
-  std::cout<<"Norm : "<<norm(temp3)<<std::endl;
+  //std::cout<<"Norm : "<<norm(temp3)<<std::endl;
   std::cout<<"Norm success"<<std::endl;
-  std::cout<<"Norm : "<<temp3.norm()<<std::endl;
+  //std::cout<<"Norm : "<<temp3.norm()<<std::endl;
   std::cout<<"Norm success"<<std::endl;
 
   if( temp1.cross(temp2).norm() == 0)
