@@ -232,8 +232,6 @@ public:
   /** \brief std-based random number generator distribution. */
   std::shared_ptr< std::uniform_int_distribution<> > rng_dist_;
 
-  /** \brief std-based random number generator. */
-  std::shared_ptr< std::function<int()> > rng_gen_;
 
 };
 

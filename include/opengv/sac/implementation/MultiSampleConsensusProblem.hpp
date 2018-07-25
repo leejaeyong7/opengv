@@ -29,7 +29,7 @@
  ******************************************************************************/
 
 //Note: has been derived from ROS
-
+#include <cstdlib>
 #include <ctime>
 
 template<typename M>
@@ -44,7 +44,7 @@ opengv::sac::MultiSampleConsensusProblem<M>::MultiSampleConsensusProblem(
   else
     rng_alg_.seed(12345u);
 
-  rng_gen_.reset(new std::function<int()>(std::bind(*rng_dist_, rng_alg_)));
+  std::srand(std::time(nullptr));
 }
 
 template<typename M>
@@ -176,7 +176,7 @@ template<typename M>
 int
 opengv::sac::MultiSampleConsensusProblem<M>::rnd()
 {
-  return ((*rng_gen_) ());
+  return std::rand();
 }
 
 
