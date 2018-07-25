@@ -45,7 +45,21 @@
 #include <opengv/math/roots.hpp>
 #include <opengv/math/arun.hpp>
 #include <opengv/math/cayley.hpp>
+#include <cstdlib>
 #include <iostream>
+
+Eigen::Vector3d cross(Eigen::Vector3d v1, Eigen::Vector3d v2){
+  Eigen::Vector3d vector;
+  vector[0] = v1[1]*v2[2] - v1[2]*v2[1];
+  vector[1] = v1[0]*v2[2] - v1[2]*v2[0];
+  vector[2] = v1[0]*v2[1] - v1[1]*v2[0];
+  return vector;
+}
+
+double norm(Eigen::Vector3d vector){
+  return fabs(vector[0]) + fabs(vector[1]) + fabs(vector[2]);
+}
+
 
 void
 opengv::absolute_pose::modules::p3p_kneip_main(
@@ -63,9 +77,12 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   Eigen::Vector3d temp1 = P2 - P1;
   Eigen::Vector3d temp2 = P3 - P1;
   std::cout<<"kneip main part 1.2"<<std::endl;
-  Eigen::Vector3d temp3 = temp1.cross(temp2);
+  Eigen::Vector3d temp3 = cross(temp1, temp2);
   std::cout<<"Cross success"<<std::endl;
+  std::cout<<"Norm : "<<norm(temp3)<<std::endl;
+  std::cout<<"Norm success"<<std::endl;
   std::cout<<"Norm : "<<temp3.norm()<<std::endl;
+  std::cout<<"Norm success"<<std::endl;
 
   if( temp1.cross(temp2).norm() == 0)
     return;
