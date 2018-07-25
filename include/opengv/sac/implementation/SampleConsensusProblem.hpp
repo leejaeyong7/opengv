@@ -31,6 +31,7 @@
 //Note: has been derived from ROS
 
 #include <ctime>
+#include <iostream>
 
 template<typename M>
 opengv::sac::SampleConsensusProblem<M>::SampleConsensusProblem(
@@ -88,32 +89,42 @@ void
 opengv::sac::SampleConsensusProblem<M>::getSamples(
     int &iterations, std::vector<int> &samples)
 {
+  std::cout<<"Inside sample consensus"<<std::endl;
+  std::cout<<"get sample size"<<std::endl;
   // We're assuming that indices_ have already been set in the constructor
   if (indices_->size() < (size_t)getSampleSize())
   {
+    std::cout<<"fprintf!"<<std::endl;
     fprintf( stderr,
         "[sm::SampleConsensusModel::getSamples] Can not select %zu unique points out of %zu!\n",
         (size_t) getSampleSize(), indices_->size() );
     // one of these will make it stop :)
+    std::cout<<"clear"<<std::endl;
     samples.clear();
+    std::cout<<"returning"<<std::endl;
     iterations = std::numeric_limits<int>::max();
     return;
   }
 
   // Get a second point which is different than the first
+    std::cout<<"resize"<<std::endl;
   samples.resize( getSampleSize() );
-
+  std::cout<<"iterating"<<std::endl;
   for( int iter = 0; iter < max_sample_checks_; ++iter )
   {
+    std::cout<<"draw index sample!"<<std::endl;
     drawIndexSample(samples);
 
     // If it's a good sample, stop here
+    std::cout<<"is good sample"<<std::endl;
     if(isSampleGood(samples))
       return;
   }
+  std::cout<<"fprintf stdout"<<std::endl;
   fprintf( stdout,
       "[sm::SampleConsensusModel::getSamples] WARNING: Could not select %d sample points in %d iterations!\n",
       getSampleSize(), max_sample_checks_ );
+  std::cout<<"clear"<<std::endl;
   samples.clear();
 
 }
