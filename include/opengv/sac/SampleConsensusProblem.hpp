@@ -226,8 +226,6 @@ public:
 
   /** \brief std-based random number generator distribution. */
   std::shared_ptr< std::uniform_int_distribution<> > rng_dist_;
-
-  std::srand(std::time(nullptr));
 };
 
 } // namespace sac
