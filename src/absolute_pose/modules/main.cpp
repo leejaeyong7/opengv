@@ -58,29 +58,34 @@ opengv::absolute_pose::modules::p3p_kneip_main(
   point_t P1 = p[0];
   point_t P2 = p[1];
   point_t P3 = p[2];
+  std::cout<<"kneip main part 1.1"<<std::endl;
 
   Eigen::Vector3d temp1 = P2 - P1;
   Eigen::Vector3d temp2 = P3 - P1;
+  std::cout<<"kneip main part 1.2"<<std::endl;
 
+  std::cout<<""<<std::endl;
   if( temp1.cross(temp2).norm() == 0)
     return;
+  std::cout<<"kneip main part 1.3"<<std::endl;
 
   bearingVector_t f1 = f[0];
   bearingVector_t f2 = f[1];
   bearingVector_t f3 = f[2];
+  std::cout<<"kneip main part 1.4"<<std::endl;
 
   Eigen::Vector3d e1 = f1;
   Eigen::Vector3d e3 = f1.cross(f2);
   e3 = e3/e3.norm();
   Eigen::Vector3d e2 = e3.cross(e1);
+  std::cout<<"kneip main part 1.5"<<std::endl;
 
   rotation_t T;
   T.row(0) = e1.transpose();
   T.row(1) = e2.transpose();
   T.row(2) = e3.transpose();
-
+  std::cout<<"kneip main part 1.6"<<std::endl;
   f3 = T*f3;
-
   std::cout<<"kneip main part 2"<<std::endl;
   if( f3(2,0) > 0)
   {
