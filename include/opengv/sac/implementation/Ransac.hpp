@@ -46,12 +46,12 @@ bool
 opengv::sac::Ransac<PROBLEM_T>::computeModel(
     int debug_verbosity_level)
 {
-  std::cout<<"Inside Compute model"<std::endl;
-  std::cout<<"Type defs"<std::endl;
+  std::cout<<"Inside Compute model"<<std::endl;
+  std::cout<<"Type defs"<<std::endl;
   typedef PROBLEM_T problem_t;
   typedef typename problem_t::model_t model_t;
 
-  std::cout<<"var def"<std::endl;
+  std::cout<<"var def"<<std::endl;
   iterations_ = 0;
   int n_best_inliers_count = -INT_MAX;
   double k = 1.0;
@@ -66,7 +66,7 @@ opengv::sac::Ransac<PROBLEM_T>::computeModel(
   const unsigned max_skip = max_iterations_ * 10;
 
   // Iterate
-  std::cout<<"While loop!"<std::endl;
+  std::cout<<"While loop!"<<std::endl;
   while( iterations_ < k && skipped_count < max_skip )
   {
     // Get X samples which satisfy the model criteria
@@ -143,14 +143,14 @@ opengv::sac::Ransac<PROBLEM_T>::computeModel(
       break;
     }
   }
-  std::cout<<"fprintf"<std::endl;
+  std::cout<<"fprintf"<<std::endl;
 
   if(debug_verbosity_level > 0)
     fprintf(stdout,
         "[sm::RandomSampleConsensus::computeModel] Model: %zu size, %d inliers.\n",
         model_.size(), n_best_inliers_count );
 
-  std::cout<<"model is empty check"<std::endl;
+  std::cout<<"model is empty check"<<std::endl;
   if(model_.empty())
   {
     inliers_.clear();
@@ -158,7 +158,7 @@ opengv::sac::Ransac<PROBLEM_T>::computeModel(
   }
 
   // Get the set of inliers that correspond to the best model found so far
-  std::cout<<"select within distance"<std::endl;
+  std::cout<<"select within distance"<<std::endl;
   sac_model_->selectWithinDistance( model_coefficients_, threshold_, inliers_ );
 
   return (true);
